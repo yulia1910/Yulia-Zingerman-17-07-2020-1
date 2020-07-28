@@ -1,0 +1,38 @@
+
+<div class="main" *ngIf="!errorR">
+    <app-header class="header" [header]="header"></app-header>
+    <div class="autocomplete d-flex justify-content-center">
+        <div class="search d-flex justify-content-center">
+            <span class="d-flex justify-content-center align-items-center"><i class="fa fa-search fa-fw"></i></span>
+        </div>
+        <p-autoComplete [ngClass]="{'favorite': selectedCountry.favorite }" [(ngModel)]="selectedCountry" [suggestions]="countriesSuggestions" field="name"
+                            (completeMethod)="searchCountry($event)"
+                            [dropdown]="true" (onSelect)="selectCountry($event)"></p-autoComplete>
+        
+            <button class="buttonF" (click)="addOrRemoteFavorite(selectedCountry)">{{ addRemoveAction }}</button>
+      
+    </div>
+
+    <div class="selected d-flex flex-row">
+        <div>
+            <div class="city">{{ currentCity  }}</div>
+            <div class="day" >{{ selectedDay?.dayLong }}</div>
+            <div class="description" >{{ selectedDay?.description }}</div>
+        </div>
+        
+        <div class="details d-flex flex-row" >
+            <img class="img" [src]="selectedDay?.iconUrl" width="190" height="120">
+            <div class="temp">{{ selectedDay?.maxTemp }}{{selectedDay?.unit}}</div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-between flex-wrap">
+        <app-daily-forecast class="item" *ngFor="let forecast of forecasts" [forecast]="forecast"
+                                (click)="onClick(forecast)"></app-daily-forecast>
+    </div>
+    
+</div>
+<div *ngIf="errorR" class="backdrop">
+    <div class="error">{{errorR}}</div>
+</div>
+

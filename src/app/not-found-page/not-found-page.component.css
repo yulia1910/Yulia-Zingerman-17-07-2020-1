@@ -1,0 +1,9 @@
+.main{
+    width:100%;
+    text-align: center;
+    font-size: 2rem;
+    color: #878787;
+    font-weight: 600;
+    top:50%;
+    position: absolute;
+}

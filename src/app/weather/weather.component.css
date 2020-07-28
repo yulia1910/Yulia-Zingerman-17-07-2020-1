@@ -1,0 +1,144 @@
+.main{
+    width: 100%;
+    overflow-y: scroll;
+}
+.header{
+    margin-bottom: 20px;
+}
+.autocomplete{
+    margin-top: 70px;
+    width: 100%;
+}
+.buttonF{
+    margin-left: 2%;
+    border-radius: 4px;;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    cursor: pointer;
+    border: 1px solid transparent;
+    /* padding: 6px 12px; */
+    color: #fff;
+    width: 181px;
+}
+.search{
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 4px;
+    width: 30px;
+    border-right: 0px;
+}
+:host >>> .ui-autocomplete .ui-button.ui-button-icon-only{
+    display: none !important;
+}
+:host >>> .ui-inputtext{
+    width: 300px;
+    border-color: #ccc !important;
+    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+    /* border-left: 0px; */
+}
+
+:host >>> .ui-inputtext:enabled:focus{
+   border-color: #ccc !important;
+   box-shadow: none !important;
+   text-decoration: none !important;
+   outline: none !important;
+}
+:host >>> .favorite .ui-inputtext {
+    color: #f05514;
+}
+
+.container{
+    width: 100%;
+}
+.item{
+    width: 25%;
+}
+
+.selected{
+    margin-left: 5%;
+    margin-top: 123px;
+    margin-bottom: 100px;
+}
+.city{
+    color: #878787;
+    text-align: left;
+    font-size: 1.8rem;
+}
+.day{
+    font-size: 1.2rem;
+    color: #878787;
+    text-align: left;
+}
+.description{
+    font-size: 1.2rem;
+    color: #878787;
+    text-align: left;
+}
+.temp{
+    font-size: 2rem;
+    color: #212121;
+    align-self: center;
+}
+ .clicked{
+    background-color: #fcfcfc;
+    border: 1px solid #e9e9e9;
+    border-radius: 1px; 
+}
+
+@media only screen and (max-width: 600px) {
+    :host >>> .ui-inputtext{
+        width: 100px;
+    }
+    .item{
+        width: 90%;
+    }
+  }
+
+@media only screen and (min-width: 600px) {
+    :host >>> .ui-inputtext{
+        width: 200px;
+    }
+    .item{
+        width: 90%;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    :host >>> .ui-inputtext{
+        width: 300px;
+    }
+    .item{
+        width: 45%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    :host >>> .ui-inputtext{
+        width: 400px;
+    }
+    .item{
+        width: 20%;
+    }
+  }
+
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+.error{
+    position: absolute;
+    top: 30%;
+    font-weight: 600;
+    color: #878787;
+    font-size: 1.4rem;
+    right: 20%;
+    left: 20%;
+}

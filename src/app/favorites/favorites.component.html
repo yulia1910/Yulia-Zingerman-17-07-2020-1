@@ -1,0 +1,7 @@
+<div class="main" >
+    <app-header [header]="header"></app-header> 
+    <div class="container d-flex justify-content-start flex-wrap">
+        <app-city class="city" *ngFor="let fav of favorites" [location]="fav" (click)="onClick(fav.key, fav.cityName)"></app-city>
+    </div>
+</div>
+

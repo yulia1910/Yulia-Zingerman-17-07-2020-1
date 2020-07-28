@@ -1,0 +1,9 @@
+
+<div class="main" [ngClass]='{selected: forecast.selected == true }'>
+    <div class="day">{{ forecast.day }}</div>
+    <img [src]="forecast.iconUrl" width="80%">
+    <div class="temp">
+        <div class="max">{{ forecast.maxTemp }}{{ forecast.unit }}</div>
+        <div class="min">{{ forecast.minTemp }}{{ forecast.unit }}</div>
+    </div>
+</div>
