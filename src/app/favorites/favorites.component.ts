@@ -19,14 +19,14 @@ import { isNullOrUndefined } from 'util';
 export class FavoritesComponent implements OnInit {
   header = 'Favorite Locations';
   favorites: favoriteLocation[] = [];
- private subscription1: Subscription;
+ private subscriptionSelectFavorites: Subscription;
  private subscriptions: Subscription[] = [];
   constructor(private store: Store<FavoritesState>,  
               private weatherService: WeatherService,
               private router: Router) {}
 
   ngOnInit(): void {
-    this.subscription1 = this.store.select( selectFavorites ).subscribe( favoritesArr => {
+    this.subscriptionSelectFavorites = this.store.select( selectFavorites ).subscribe( favoritesArr => {
       favoritesArr.map( city => {
         this.subscriptions.push( this.weatherService.getCurrentCondition( city.key ).subscribe( (cond: CurrentCondition[])  => {
           this.favorites.push({
@@ -47,8 +47,15 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscription1.unsubscribe();
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    if ( !isNullOrUndefined( this.subscriptionSelectFavorites ) ) {
+      this.subscriptionSelectFavorites.unsubscribe();
+    }
+    
+    this.subscriptions.forEach(subscription => {
+      if ( !isNullOrUndefined( subscription ) ) {
+        subscription.unsubscribe();
+      }
+    });
   }
 
 }

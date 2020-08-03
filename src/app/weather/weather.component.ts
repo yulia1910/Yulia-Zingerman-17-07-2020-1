@@ -33,11 +33,11 @@ export class WeatherComponent implements OnInit {
   action: string;
   favorites: Favorite[];
   addRemoveAction ="Add to Favorites";
-  private subscription1: Subscription;
-  private subscription2: Subscription;
-  private subscription3: Subscription;
-  private subscription4: Subscription;
-  private subscription5: Subscription;
+  private subscriptionSelectFavorites: Subscription;
+  private subscriptionGetForeCast: Subscription;
+  private subscriptionGetLocations: Subscription;
+  private subscriptionSelectCountry: Subscription;
+  private subscriptionFavorites: Subscription;
   errorR: string;
 
   constructor(private lacationService: WeatherService,
@@ -46,7 +46,7 @@ export class WeatherComponent implements OnInit {
   ngOnInit(): void {
     let key = this.route.snapshot.paramMap.get('key');
     if( key == null ) {
-      this.subscription5 = this.store.select(selectFavorites ).subscribe( favoritesArr => {
+      this.subscriptionSelectFavorites = this.store.select(selectFavorites ).subscribe( favoritesArr => {
         if ( favoritesArr.length != 0 ) {
           if ( favoritesArr.filter( item => item.key == this.currencyCityKey ).length != 0 ) {
             this.selectedCountry = {
@@ -54,7 +54,7 @@ export class WeatherComponent implements OnInit {
               name: api.defaultCity,
               favorite: true
             };
-            this.addRemoveAction = 'Remove From  Favorites';
+            this.addRemoveAction = 'Remove Favorite';
           } else {
             this.selectedCountry = {
               key: api.defaultKey,
@@ -78,12 +78,12 @@ export class WeatherComponent implements OnInit {
         name: this.route.snapshot.paramMap.get('city'),
         favorite: true
       }  
-      this.addRemoveAction = 'Remove From Favorites';
+      this.addRemoveAction = 'Remove Favorite';
     }
     this.currentCity = this.selectedCountry.name;
     this.header = `${this.selectedCountry.name}${this.title}`;
 
-    this.subscription1 = this.lacationService.getForeCast(this.selectedCountry.key)
+    this.subscriptionGetForeCast = this.lacationService.getForeCast(this.selectedCountry.key)
     .pipe(catchError(err => this.errorR = err )).subscribe( (res: DailyForecasts) => {
       this.dailyForecasts = res;
       this.getForecasts(res);
@@ -91,7 +91,7 @@ export class WeatherComponent implements OnInit {
   }
 
   searchCountry( event ) {
-    this.subscription2 = this.lacationService.getLocations( event.query )
+    this.subscriptionGetLocations = this.lacationService.getLocations( event.query )
       .pipe(catchError(err => this.errorR = err )).subscribe( (res: City[] ) => {
       this.countriesSuggestions = res.map(country => {
         return {
@@ -114,12 +114,12 @@ export class WeatherComponent implements OnInit {
     this.header = `${this.currentCity}${this.title}`;
     this.currencyCityKey = event.key;
 
-    this.subscription3 = this.lacationService.getForeCast(this.currencyCityKey)
+    this.subscriptionSelectCountry = this.lacationService.getForeCast(this.currencyCityKey)
       .pipe(catchError(err => this.errorR = err )).subscribe( (res: DailyForecasts) => {
       this.getForecasts(res);
     });
 
-    this.subscription4 = this.store.select(selectFavorites ).subscribe( favoritesArr => {
+    this.subscriptionFavorites = this.store.select(selectFavorites ).subscribe( favoritesArr => {
       if ( favoritesArr.length != 0 ) {
         if ( favoritesArr.filter( item => item.key == event.key ).length != 0 ) {
           this.selectedCountry = {
@@ -127,7 +127,7 @@ export class WeatherComponent implements OnInit {
             name: event.name,
             favorite: true
           };
-          this.addRemoveAction = 'Remove From Favorites';
+          this.addRemoveAction = 'Remove Favorite';
         }else {
           this.selectedCountry = {
             key: event.key,
@@ -180,7 +180,7 @@ export class WeatherComponent implements OnInit {
       this.store.dispatch( new FavoriteActions.AddToFavorites( {"key": this.selectedCountry.key.toString(),
       "cityName": this.selectedCountry.name} ));
       
-      this.addRemoveAction = 'Remove From Favorites';
+      this.addRemoveAction = 'Remove Favorite';
     } else {
       this.store.dispatch( new FavoriteActions.RemoveFromFavorites( city.key ));
       this.selectedCountry = {
@@ -193,11 +193,22 @@ export class WeatherComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscription1.unsubscribe();
-    this.subscription2.unsubscribe();
-    this.subscription3.unsubscribe();
-    this.subscription4.unsubscribe();
-    this.subscription5.unsubscribe();
+
+    if ( !isNullOrUndefined( this.subscriptionSelectFavorites )) {
+      this.subscriptionSelectFavorites.unsubscribe();
+    }
+    if ( !isNullOrUndefined( this.subscriptionGetForeCast )) {
+      this.subscriptionGetForeCast.unsubscribe();
+    }
+    if ( !isNullOrUndefined( this.subscriptionGetLocations )) {
+      this.subscriptionGetLocations.unsubscribe();
+    }
+    if ( !isNullOrUndefined( this.subscriptionSelectCountry )) {
+      this.subscriptionSelectCountry.unsubscribe();
+    }
+    if ( !isNullOrUndefined( this.subscriptionFavorites ) ) {
+      this.subscriptionFavorites.unsubscribe();
+    }
   }
   
 }
